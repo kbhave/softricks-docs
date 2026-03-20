@@ -261,6 +261,45 @@ curl "https://api.softricks.net/idig/?d=example.com&amp;rr=all&amp;token=TOKEN"<
 <p>Deep key management audit &mdash; algorithm strength, key rollover readiness, signature lifetimes, DS/DNSKEY consistency, and NSEC3 exposure.</p>
 <pre><code>curl "https://api.softricks.net/idig/dnssec/health?d=example.com&amp;token=TOKEN"</code></pre>
 
+<h3>Chain of Trust</h3>
+<p>The response includes a <code>chain</code> array mapping the full DNSSEC trust path from root to your domain. Each link contains the DNSKEY records at that zone, the DS records from the parent, and a <code>chain_intact</code> flag indicating whether the DS&rarr;DNSKEY handoff is valid at that level.</p>
+
+<pre><code>"chain": [
+  {
+    "zone": ".",
+    "level": "root",
+    "dnskeys": [{"key_tag": "20326", "type": "KSK", "algorithm": "RSA/SHA-256"}, ...],
+    "chain_intact": true,
+    "ds_to_child": [{"key_tag": "19718", "algorithm": "ECDSAP256SHA256", "digest_type": "SHA-256"}]
+  },
+  {
+    "zone": "com.",
+    "level": "tld",
+    "dnskeys": [{"key_tag": "19718", "type": "KSK", ...}, ...],
+    "ds_from_parent": [{"key_tag": "19718", ...}],
+    "chain_intact": true,
+    "matching_key_tags": ["19718"],
+    "ds_to_child": [{"key_tag": "2371", ...}]
+  },
+  {
+    "zone": "example.com.",
+    "level": "domain",
+    "dnskeys": [{"key_tag": "2371", "type": "KSK", ...}, ...],
+    "ds_from_parent": [{"key_tag": "2371", ...}],
+    "chain_intact": true,
+    "matching_key_tags": ["2371"]
+  }
+],
+"chain_intact": true</code></pre>
+
+<ul>
+  <li><strong><code>chain_intact</code></strong> (top-level) &mdash; <code>true</code> if every link validates end-to-end</li>
+  <li><strong><code>matching_key_tags</code></strong> &mdash; which DNSKEY key tags match the DS from the parent</li>
+  <li><strong><code>broken: true</code></strong> &mdash; appears on the first link where the chain fails, pinpointing the exact break</li>
+  <li>If a link breaks, <code>warnings</code> and <code>recommendations</code> are added with actionable guidance</li>
+</ul>
+<p>This data is sufficient to render a DNSViz-style visual diagram of the chain.</p>
+
 <!-- EMAIL SECURITY -->
 <h2 id="email-security">Email Security Audit <code>GET /email/security</code></h2>
 
