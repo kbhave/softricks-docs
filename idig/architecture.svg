@@ -1,0 +1,173 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 720" font-family="Inter, system-ui, sans-serif">
+  <defs>
+    <filter id="shadow" x="-4%" y="-4%" width="108%" height="108%">
+      <feDropShadow dx="0" dy="2" stdDeviation="4" flood-color="#000" flood-opacity="0.08"/>
+    </filter>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#94a3b8"/>
+    </marker>
+    <marker id="arrow-blue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#3b82f6"/>
+    </marker>
+    <marker id="arrow-amber" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#f59e0b"/>
+    </marker>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#f8fafc"/>
+      <stop offset="100%" stop-color="#f1f5f9"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1100" height="720" rx="16" fill="url(#bg)"/>
+
+  <!-- Title -->
+  <text x="550" y="38" text-anchor="middle" font-size="20" font-weight="700" fill="#0f172a">iDig API — AWS Architecture</text>
+  <text x="550" y="58" text-anchor="middle" font-size="12" fill="#64748b">us-east-1 · Serverless · Container-based Lambda</text>
+
+  <!-- ====== AWS Cloud boundary ====== -->
+  <rect x="160" y="80" width="900" height="610" rx="12" fill="none" stroke="#e2e8f0" stroke-width="1.5" stroke-dasharray="8,4"/>
+  <text x="180" y="100" font-size="11" font-weight="600" fill="#94a3b8" letter-spacing="1">AWS CLOUD</text>
+
+  <!-- ====== CLIENTS (left) ====== -->
+  <!-- Developer / curl -->
+  <rect x="16" y="170" width="120" height="56" rx="10" fill="#fff" stroke="#cbd5e1" filter="url(#shadow)"/>
+  <text x="76" y="194" text-anchor="middle" font-size="11" font-weight="600" fill="#334155">Developer</text>
+  <text x="76" y="210" text-anchor="middle" font-size="10" fill="#64748b">curl / SDK</text>
+
+  <!-- AI Agent -->
+  <rect x="16" y="260" width="120" height="56" rx="10" fill="#fff" stroke="#cbd5e1" filter="url(#shadow)"/>
+  <text x="76" y="284" text-anchor="middle" font-size="11" font-weight="600" fill="#334155">AI Agent</text>
+  <text x="76" y="300" text-anchor="middle" font-size="10" fill="#64748b">MCP / OpenAPI</text>
+
+  <!-- Mobile App -->
+  <rect x="16" y="350" width="120" height="56" rx="10" fill="#fff" stroke="#cbd5e1" filter="url(#shadow)"/>
+  <text x="76" y="374" text-anchor="middle" font-size="11" font-weight="600" fill="#334155">Mobile App</text>
+  <text x="76" y="390" text-anchor="middle" font-size="10" fill="#64748b">iOS / Android</text>
+
+  <!-- Client arrows to API Gateway -->
+  <line x1="136" y1="198" x2="195" y2="262" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <line x1="136" y1="288" x2="195" y2="280" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <line x1="136" y1="378" x2="195" y2="298" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- ====== API GATEWAY ====== -->
+  <rect x="200" y="230" width="160" height="100" rx="10" fill="#fefce8" stroke="#fbbf24" stroke-width="1.5" filter="url(#shadow)"/>
+  <text x="280" y="260" text-anchor="middle" font-size="10" font-weight="700" fill="#92400e" letter-spacing="0.5">API GATEWAY</text>
+  <text x="280" y="278" text-anchor="middle" font-size="13" font-weight="600" fill="#78350f">HTTP API</text>
+  <text x="280" y="296" text-anchor="middle" font-size="10" fill="#a16207">/idig/{proxy+}</text>
+  <text x="280" y="312" text-anchor="middle" font-size="9" fill="#a16207">50 req/s · 100 burst</text>
+
+  <!-- Arrow: API GW → Lambda API -->
+  <line x1="360" y1="280" x2="418" y2="280" stroke="#f59e0b" stroke-width="2" marker-end="url(#arrow-amber)"/>
+
+  <!-- ====== LAMBDA API ====== -->
+  <rect x="422" y="200" width="220" height="160" rx="10" fill="#eff6ff" stroke="#3b82f6" stroke-width="1.5" filter="url(#shadow)"/>
+  <text x="532" y="224" text-anchor="middle" font-size="10" font-weight="700" fill="#1e40af" letter-spacing="0.5">AWS LAMBDA</text>
+  <text x="532" y="245" text-anchor="middle" font-size="14" font-weight="700" fill="#1e3a8a">iDig API Function</text>
+  <text x="532" y="264" text-anchor="middle" font-size="10" fill="#3b82f6">Python 3.11 · ARM64 · Container</text>
+  <text x="532" y="282" text-anchor="middle" font-size="10" fill="#3b82f6">1024 MB · 30s timeout</text>
+  <line x1="442" y1="295" x2="622" y2="295" stroke="#bfdbfe" stroke-width="0.8"/>
+  <text x="532" y="312" text-anchor="middle" font-size="10" fill="#1e40af" font-weight="600">FastAPI + Mangum</text>
+  <text x="532" y="328" text-anchor="middle" font-size="9" fill="#3b82f6">dig · delv · Unbound · whois</text>
+  <text x="532" y="344" text-anchor="middle" font-size="9" fill="#3b82f6">httpx (RDAP, crt.sh, ip-api)</text>
+
+  <!-- ====== SQS QUEUE ====== -->
+  <rect x="422" y="420" width="220" height="70" rx="10" fill="#fdf2f8" stroke="#ec4899" stroke-width="1.5" filter="url(#shadow)"/>
+  <text x="532" y="444" text-anchor="middle" font-size="10" font-weight="700" fill="#9d174d" letter-spacing="0.5">AMAZON SQS</text>
+  <text x="532" y="464" text-anchor="middle" font-size="13" font-weight="600" fill="#831843">Batch Queue</text>
+  <text x="532" y="480" text-anchor="middle" font-size="9" fill="#be185d">15 min visibility · 1h retention</text>
+
+  <!-- Arrow: Lambda API → SQS (sends batch job) -->
+  <line x1="532" y1="360" x2="532" y2="416" stroke="#ec4899" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#arrow)"/>
+  <text x="544" y="393" font-size="9" fill="#be185d">enqueue job</text>
+
+  <!-- ====== LAMBDA BATCH WORKER ====== -->
+  <rect x="422" y="540" width="220" height="110" rx="10" fill="#f0fdf4" stroke="#22c55e" stroke-width="1.5" filter="url(#shadow)"/>
+  <text x="532" y="564" text-anchor="middle" font-size="10" font-weight="700" fill="#166534" letter-spacing="0.5">AWS LAMBDA</text>
+  <text x="532" y="585" text-anchor="middle" font-size="14" font-weight="700" fill="#14532d">Batch Worker</text>
+  <text x="532" y="604" text-anchor="middle" font-size="10" fill="#22c55e">Python 3.11 · ARM64 · Container</text>
+  <text x="532" y="620" text-anchor="middle" font-size="10" fill="#22c55e">1024 MB · 15 min timeout</text>
+  <text x="532" y="638" text-anchor="middle" font-size="9" fill="#166534">batch_handler.handler</text>
+
+  <!-- Arrow: SQS → Batch Worker (triggers) -->
+  <line x1="532" y1="490" x2="532" y2="536" stroke="#22c55e" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <text x="544" y="518" font-size="9" fill="#166534">triggers</text>
+
+  <!-- ====== DYNAMODB TOKENS ====== -->
+  <rect x="720" y="180" width="190" height="90" rx="10" fill="#faf5ff" stroke="#a855f7" stroke-width="1.5" filter="url(#shadow)"/>
+  <text x="815" y="204" text-anchor="middle" font-size="10" font-weight="700" fill="#6b21a8" letter-spacing="0.5">AMAZON DYNAMODB</text>
+  <text x="815" y="225" text-anchor="middle" font-size="13" font-weight="600" fill="#581c87">Tokens Table</text>
+  <text x="815" y="243" text-anchor="middle" font-size="9" fill="#7e22ce">token_hash (PK) · TTL auto-cleanup</text>
+  <text x="815" y="257" text-anchor="middle" font-size="9" fill="#7e22ce">plans · scopes · usage · rate limits</text>
+
+  <!-- Arrow: Lambda API → DynamoDB Tokens -->
+  <line x1="642" y1="255" x2="716" y2="235" stroke="#a855f7" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- ====== DYNAMODB BATCH JOBS ====== -->
+  <rect x="720" y="310" width="190" height="80" rx="10" fill="#faf5ff" stroke="#a855f7" stroke-width="1.5" filter="url(#shadow)"/>
+  <text x="815" y="334" text-anchor="middle" font-size="10" font-weight="700" fill="#6b21a8" letter-spacing="0.5">AMAZON DYNAMODB</text>
+  <text x="815" y="355" text-anchor="middle" font-size="13" font-weight="600" fill="#581c87">Batch Jobs Table</text>
+  <text x="815" y="373" text-anchor="middle" font-size="9" fill="#7e22ce">job_id (PK) · status · results · TTL</text>
+
+  <!-- Arrow: Lambda API → DynamoDB Jobs -->
+  <line x1="642" y1="310" x2="716" y2="340" stroke="#a855f7" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- Arrow: Batch Worker → DynamoDB Jobs (writes results) -->
+  <line x1="642" y1="590" x2="810" y2="394" stroke="#a855f7" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#arrow)"/>
+  <text x="740" y="505" font-size="9" fill="#7e22ce" transform="rotate(-37, 740, 505)">write results</text>
+
+  <!-- ====== EXTERNAL SERVICES ====== -->
+  <rect x="720" y="460" width="190" height="190" rx="10" fill="#fff" stroke="#cbd5e1" stroke-width="1" filter="url(#shadow)"/>
+  <text x="815" y="484" text-anchor="middle" font-size="10" font-weight="700" fill="#475569" letter-spacing="0.5">EXTERNAL SERVICES</text>
+  <line x1="740" y1="494" x2="890" y2="494" stroke="#e2e8f0" stroke-width="0.8"/>
+
+  <circle cx="745" cy="516" r="4" fill="#3b82f6"/>
+  <text x="758" y="520" font-size="11" fill="#334155" font-weight="500">DNS Root Servers</text>
+
+  <circle cx="745" cy="542" r="4" fill="#22c55e"/>
+  <text x="758" y="546" font-size="11" fill="#334155" font-weight="500">crt.sh (CT Logs)</text>
+
+  <circle cx="745" cy="568" r="4" fill="#f59e0b"/>
+  <text x="758" y="572" font-size="11" fill="#334155" font-weight="500">ip-api.com (Geo)</text>
+
+  <circle cx="745" cy="594" r="4" fill="#a855f7"/>
+  <text x="758" y="598" font-size="11" fill="#334155" font-weight="500">RDAP Servers (22 TLDs)</text>
+
+  <circle cx="745" cy="620" r="4" fill="#ef4444"/>
+  <text x="758" y="624" font-size="11" fill="#334155" font-weight="500">WHOIS Servers</text>
+
+  <circle cx="745" cy="646" r="4" fill="#06b6d4"/>
+  <text x="758" y="650" font-size="11" fill="#334155" font-weight="500">TLS Endpoints (443)</text>
+
+  <!-- Arrow: Lambda API → External -->
+  <line x1="642" y1="340" x2="716" y2="520" stroke="#94a3b8" stroke-width="1.2" stroke-dasharray="4,3" marker-end="url(#arrow)"/>
+
+  <!-- ====== CONTAINER IMAGE BOX ====== -->
+  <rect x="200" y="560" width="170" height="110" rx="10" fill="#fff7ed" stroke="#f97316" stroke-width="1" filter="url(#shadow)"/>
+  <text x="285" y="582" text-anchor="middle" font-size="10" font-weight="700" fill="#9a3412" letter-spacing="0.5">CONTAINER IMAGE</text>
+  <text x="285" y="600" text-anchor="middle" font-size="10" fill="#c2410c">ECR: lambda/python:3.11</text>
+  <line x1="220" y1="610" x2="350" y2="610" stroke="#fed7aa" stroke-width="0.8"/>
+  <text x="285" y="626" text-anchor="middle" font-size="9" fill="#9a3412">bind-utils (dig/delv)</text>
+  <text x="285" y="640" text-anchor="middle" font-size="9" fill="#9a3412">unbound (local resolver)</text>
+  <text x="285" y="654" text-anchor="middle" font-size="9" fill="#9a3412">whois · httpx · fastapi · mangum</text>
+
+  <!-- Dashed line: container shared by both lambdas -->
+  <line x1="370" y1="615" x2="418" y2="580" stroke="#f97316" stroke-width="1" stroke-dasharray="4,3"/>
+  <line x1="370" y1="600" x2="418" y2="310" stroke="#f97316" stroke-width="1" stroke-dasharray="4,3"/>
+
+  <!-- ====== LEGEND ====== -->
+  <rect x="200" y="108" width="340" height="50" rx="8" fill="#fff" stroke="#e2e8f0" filter="url(#shadow)"/>
+  <text x="216" y="128" font-size="9" font-weight="600" fill="#64748b">LEGEND</text>
+  <line x1="216" y1="145" x2="236" y2="145" stroke="#94a3b8" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <text x="242" y="149" font-size="9" fill="#64748b">Request flow</text>
+  <line x1="300" y1="145" x2="320" y2="145" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arrow)"/>
+  <text x="326" y="149" font-size="9" fill="#64748b">Async / internal</text>
+  <rect x="410" y="138" width="10" height="10" rx="2" fill="#eff6ff" stroke="#3b82f6"/>
+  <text x="426" y="148" font-size="9" fill="#64748b">Compute</text>
+  <rect x="476" y="138" width="10" height="10" rx="2" fill="#faf5ff" stroke="#a855f7"/>
+  <text x="492" y="148" font-size="9" fill="#64748b">Storage</text>
+
+  <!-- Data flow label: HTTPS -->
+  <text x="168" y="256" font-size="8" fill="#94a3b8" font-weight="500">HTTPS</text>
+
+</svg>
