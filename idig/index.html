@@ -1,229 +1,615 @@
 <!DOCTYPE html>
 <html lang="en" data-theme="light">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>iDig API — Developer Guide</title>
-<meta name="description" content="Comprehensive DNS intelligence and domain security API. Developer documentation for iDig.">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-<style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{
-  --bg:#ffffff;--bg-alt:#f8f9fb;--bg-code:#f1f3f5;
-  --text:#1a1a2e;--text-dim:#5c6370;--text-code:#e45649;
-  --border:#e4e7eb;--accent:#2563eb;--accent-light:#dbeafe;
-  --sidebar-w:280px;--theory-bg:#f0f7ff;--theory-border:#93c5fd;
-  --table-stripe:#f8fafc;--shadow:0 1px 3px rgba(0,0,0,.08);
-  --code-bg:#282c34;--code-text:#abb2bf;
-}
-[data-theme="dark"]{
-  --bg:#0f1117;--bg-alt:#161822;--bg-code:#1e2030;
-  --text:#e1e4e8;--text-dim:#8b949e;--text-code:#ff7b72;
-  --border:#2d333b;--accent:#58a6ff;--accent-light:#1a3a5c;
-  --sidebar-w:280px;--theory-bg:#121a2e;--theory-border:#1e4976;
-  --table-stripe:#161822;--shadow:0 1px 3px rgba(0,0,0,.3);
-  --code-bg:#1e2030;--code-text:#abb2bf;
-}
-html{scroll-behavior:smooth;scroll-padding-top:80px}
-body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--text);line-height:1.7;font-size:15px;transition:background .2s,color .2s}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>iDig API — Developer Guide</title>
+  <meta name="description"
+    content="Comprehensive DNS intelligence and domain security API. Developer documentation for iDig.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+    rel="stylesheet">
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0
+    }
 
-/* Top bar */
-.topbar{position:fixed;top:0;left:0;right:0;height:60px;background:var(--bg);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 24px;z-index:100;backdrop-filter:blur(12px);background:rgba(var(--bg),0.85)}
-[data-theme="dark"] .topbar{background:rgba(15,17,23,0.9)}
-[data-theme="light"] .topbar{background:rgba(255,255,255,0.9)}
-.topbar-logo{font-weight:700;font-size:20px;color:var(--accent);letter-spacing:-.5px}
-.topbar-logo span{color:var(--text-dim);font-weight:400;font-size:14px;margin-left:8px}
-.topbar-actions{margin-left:auto;display:flex;gap:12px;align-items:center}
-.theme-toggle{background:none;border:1px solid var(--border);border-radius:8px;padding:6px 10px;cursor:pointer;color:var(--text);font-size:16px;transition:all .2s}
-.theme-toggle:hover{border-color:var(--accent);background:var(--accent-light)}
-.hamburger{display:none;background:none;border:none;color:var(--text);font-size:22px;cursor:pointer;padding:4px}
+    :root {
+      --bg: #ffffff;
+      --bg-alt: #f8f9fb;
+      --bg-code: #f1f3f5;
+      --text: #1a1a2e;
+      --text-dim: #5c6370;
+      --text-code: #e45649;
+      --border: #e4e7eb;
+      --accent: #2563eb;
+      --accent-light: #dbeafe;
+      --sidebar-w: 280px;
+      --theory-bg: #f0f7ff;
+      --theory-border: #93c5fd;
+      --table-stripe: #f8fafc;
+      --shadow: 0 1px 3px rgba(0, 0, 0, .08);
+      --code-bg: #282c34;
+      --code-text: #abb2bf;
+    }
 
-/* Sidebar */
-.sidebar{position:fixed;top:60px;left:0;width:var(--sidebar-w);height:calc(100vh - 60px);overflow-y:auto;border-right:1px solid var(--border);padding:20px 0;background:var(--bg-alt);z-index:90;transition:transform .3s}
-.sidebar::-webkit-scrollbar{width:4px}
-.sidebar::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px}
-.sidebar-section{padding:0 16px;margin-bottom:16px}
-.sidebar-section-title{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:1px;color:var(--text-dim);padding:8px 0 4px}
-.sidebar a{display:block;padding:5px 12px;border-radius:6px;color:var(--text);text-decoration:none;font-size:13.5px;transition:all .15s;line-height:1.5}
-.sidebar a:hover,.sidebar a.active{background:var(--accent-light);color:var(--accent)}
-.sidebar a code{font-size:12px;background:var(--bg-code);padding:1px 5px;border-radius:3px;font-family:'JetBrains Mono',monospace}
+    [data-theme="dark"] {
+      --bg: #0f1117;
+      --bg-alt: #161822;
+      --bg-code: #1e2030;
+      --text: #e1e4e8;
+      --text-dim: #8b949e;
+      --text-code: #ff7b72;
+      --border: #2d333b;
+      --accent: #58a6ff;
+      --accent-light: #1a3a5c;
+      --sidebar-w: 280px;
+      --theory-bg: #121a2e;
+      --theory-border: #1e4976;
+      --table-stripe: #161822;
+      --shadow: 0 1px 3px rgba(0, 0, 0, .3);
+      --code-bg: #1e2030;
+      --code-text: #abb2bf;
+    }
 
-/* Main */
-.main{margin-left:var(--sidebar-w);margin-top:60px;max-width:820px;padding:40px 48px 80px}
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: 80px
+    }
 
-/* Typography */
-h1{font-size:32px;font-weight:700;letter-spacing:-.5px;margin-bottom:8px}
-h2{font-size:22px;font-weight:600;margin-top:48px;margin-bottom:16px;padding-bottom:8px;border-bottom:1px solid var(--border);letter-spacing:-.3px}
-h3{font-size:17px;font-weight:600;margin-top:36px;margin-bottom:12px}
-p{margin-bottom:14px}
-.subtitle{font-size:17px;color:var(--text-dim);margin-bottom:32px;line-height:1.6}
-a{color:var(--accent);text-decoration:none}
-a:hover{text-decoration:underline}
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      font-size: 15px;
+      transition: background .2s, color .2s
+    }
 
-/* Theory blocks */
-.theory{background:var(--theory-bg);border-left:3px solid var(--theory-border);padding:16px 20px;border-radius:0 8px 8px 0;margin:12px 0 16px;font-size:14px;line-height:1.7;color:var(--text)}
-.theory strong{color:var(--accent)}
-.theory ul{margin:8px 0 0 20px}
-.theory li{margin-bottom:6px}
+    /* Top bar */
+    .topbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 60px;
+      background: var(--bg);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      padding: 0 24px;
+      z-index: 100;
+      backdrop-filter: blur(12px);
+      background: rgba(var(--bg), 0.85)
+    }
 
-/* Code */
-code{font-family:'JetBrains Mono',monospace;font-size:13px}
-:not(pre)>code{background:var(--bg-code);padding:2px 6px;border-radius:4px;color:var(--text-code);font-size:13px}
-pre{background:var(--code-bg);color:var(--code-text);padding:16px 20px;border-radius:8px;overflow-x:auto;margin:12px 0 16px;font-size:13px;line-height:1.6;position:relative}
-pre code{background:none;color:inherit;padding:0}
-.copy-btn{position:absolute;top:8px;right:8px;background:rgba(255,255,255,.1);border:none;color:#8b949e;padding:4px 10px;border-radius:4px;cursor:pointer;font-size:12px;font-family:'JetBrains Mono',monospace;transition:all .2s}
-.copy-btn:hover{background:rgba(255,255,255,.2);color:#fff}
+    [data-theme="dark"] .topbar {
+      background: rgba(15, 17, 23, 0.9)
+    }
 
-/* Tables */
-table{width:100%;border-collapse:collapse;margin:12px 0 16px;font-size:14px}
-th{text-align:left;padding:10px 14px;border-bottom:2px solid var(--border);font-weight:600;font-size:13px}
-td{padding:10px 14px;border-bottom:1px solid var(--border)}
-tr:nth-child(even) td{background:var(--table-stripe)}
+    [data-theme="light"] .topbar {
+      background: rgba(255, 255, 255, 0.9)
+    }
 
-/* Lists */
-ul,ol{margin:8px 0 16px 24px}
-li{margin-bottom:6px}
-li strong{color:var(--text)}
+    .topbar-logo {
+      font-weight: 700;
+      font-size: 20px;
+      color: var(--accent);
+      letter-spacing: -.5px
+    }
 
-/* Hero */
-.hero{padding:8px 0 24px;border-bottom:1px solid var(--border);margin-bottom:32px}
-.badge{display:inline-block;background:var(--accent);color:#fff;font-size:11px;font-weight:600;padding:3px 10px;border-radius:20px;letter-spacing:.5px;margin-right:8px}
-.badge.green{background:#16a34a}
-.badge.orange{background:#ea580c}
+    .topbar-logo span {
+      color: var(--text-dim);
+      font-weight: 400;
+      font-size: 14px;
+      margin-left: 8px
+    }
 
-/* Responsive */
-@media(max-width:900px){
-  .sidebar{transform:translateX(-100%)}
-  .sidebar.open{transform:translateX(0)}
-  .main{margin-left:0;padding:24px 20px 60px}
-  .hamburger{display:block}
-  .overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:85}
-  .overlay.show{display:block}
-}
-</style>
+    .topbar-actions {
+      margin-left: auto;
+      display: flex;
+      gap: 12px;
+      align-items: center
+    }
+
+    .theme-toggle {
+      background: none;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 6px 10px;
+      cursor: pointer;
+      color: var(--text);
+      font-size: 16px;
+      transition: all .2s
+    }
+
+    .theme-toggle:hover {
+      border-color: var(--accent);
+      background: var(--accent-light)
+    }
+
+    .hamburger {
+      display: none;
+      background: none;
+      border: none;
+      color: var(--text);
+      font-size: 22px;
+      cursor: pointer;
+      padding: 4px
+    }
+
+    /* Sidebar */
+    .sidebar {
+      position: fixed;
+      top: 60px;
+      left: 0;
+      width: var(--sidebar-w);
+      height: calc(100vh - 60px);
+      overflow-y: auto;
+      border-right: 1px solid var(--border);
+      padding: 20px 0;
+      background: var(--bg-alt);
+      z-index: 90;
+      transition: transform .3s
+    }
+
+    .sidebar::-webkit-scrollbar {
+      width: 4px
+    }
+
+    .sidebar::-webkit-scrollbar-thumb {
+      background: var(--border);
+      border-radius: 4px
+    }
+
+    .sidebar-section {
+      padding: 0 16px;
+      margin-bottom: 16px
+    }
+
+    .sidebar-section-title {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--text-dim);
+      padding: 8px 0 4px
+    }
+
+    .sidebar a {
+      display: block;
+      padding: 5px 12px;
+      border-radius: 6px;
+      color: var(--text);
+      text-decoration: none;
+      font-size: 13.5px;
+      transition: all .15s;
+      line-height: 1.5
+    }
+
+    .sidebar a:hover,
+    .sidebar a.active {
+      background: var(--accent-light);
+      color: var(--accent)
+    }
+
+    .sidebar a code {
+      font-size: 12px;
+      background: var(--bg-code);
+      padding: 1px 5px;
+      border-radius: 3px;
+      font-family: 'JetBrains Mono', monospace
+    }
+
+    /* Main */
+    .main {
+      margin-left: var(--sidebar-w);
+      margin-top: 60px;
+      max-width: 820px;
+      padding: 40px 48px 80px
+    }
+
+    /* Typography */
+    h1 {
+      font-size: 32px;
+      font-weight: 700;
+      letter-spacing: -.5px;
+      margin-bottom: 8px
+    }
+
+    h2 {
+      font-size: 22px;
+      font-weight: 600;
+      margin-top: 48px;
+      margin-bottom: 16px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--border);
+      letter-spacing: -.3px
+    }
+
+    h3 {
+      font-size: 17px;
+      font-weight: 600;
+      margin-top: 36px;
+      margin-bottom: 12px
+    }
+
+    p {
+      margin-bottom: 14px
+    }
+
+    .subtitle {
+      font-size: 17px;
+      color: var(--text-dim);
+      margin-bottom: 32px;
+      line-height: 1.6
+    }
+
+    a {
+      color: var(--accent);
+      text-decoration: none
+    }
+
+    a:hover {
+      text-decoration: underline
+    }
+
+    /* Theory blocks */
+    .theory {
+      background: var(--theory-bg);
+      border-left: 3px solid var(--theory-border);
+      padding: 16px 20px;
+      border-radius: 0 8px 8px 0;
+      margin: 12px 0 16px;
+      font-size: 14px;
+      line-height: 1.7;
+      color: var(--text)
+    }
+
+    .theory strong {
+      color: var(--accent)
+    }
+
+    .theory ul {
+      margin: 8px 0 0 20px
+    }
+
+    .theory li {
+      margin-bottom: 6px
+    }
+
+    /* Code */
+    code {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px
+    }
+
+    :not(pre)>code {
+      background: var(--bg-code);
+      padding: 2px 6px;
+      border-radius: 4px;
+      color: var(--text-code);
+      font-size: 13px
+    }
+
+    pre {
+      background: var(--code-bg);
+      color: var(--code-text);
+      padding: 16px 20px;
+      border-radius: 8px;
+      overflow-x: auto;
+      margin: 12px 0 16px;
+      font-size: 13px;
+      line-height: 1.6;
+      position: relative
+    }
+
+    pre code {
+      background: none;
+      color: inherit;
+      padding: 0
+    }
+
+    .copy-btn {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      background: rgba(255, 255, 255, .1);
+      border: none;
+      color: #8b949e;
+      padding: 4px 10px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 12px;
+      font-family: 'JetBrains Mono', monospace;
+      transition: all .2s
+    }
+
+    .copy-btn:hover {
+      background: rgba(255, 255, 255, .2);
+      color: #fff
+    }
+
+    /* Tables */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 12px 0 16px;
+      font-size: 14px
+    }
+
+    th {
+      text-align: left;
+      padding: 10px 14px;
+      border-bottom: 2px solid var(--border);
+      font-weight: 600;
+      font-size: 13px
+    }
+
+    td {
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--border)
+    }
+
+    tr:nth-child(even) td {
+      background: var(--table-stripe)
+    }
+
+    /* Lists */
+    ul,
+    ol {
+      margin: 8px 0 16px 24px
+    }
+
+    li {
+      margin-bottom: 6px
+    }
+
+    li strong {
+      color: var(--text)
+    }
+
+    /* Hero */
+    .hero {
+      padding: 8px 0 24px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 32px
+    }
+
+    .badge {
+      display: inline-block;
+      background: var(--accent);
+      color: #fff;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 3px 10px;
+      border-radius: 20px;
+      letter-spacing: .5px;
+      margin-right: 8px
+    }
+
+    .badge.green {
+      background: #16a34a
+    }
+
+    .badge.orange {
+      background: #ea580c
+    }
+
+    /* Responsive */
+    @media(max-width:900px) {
+      .sidebar {
+        transform: translateX(-100%)
+      }
+
+      .sidebar.open {
+        transform: translateX(0)
+      }
+
+      .main {
+        margin-left: 0;
+        padding: 24px 20px 60px
+      }
+
+      .hamburger {
+        display: block
+      }
+
+      .overlay {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, .4);
+        z-index: 85
+      }
+
+      .overlay.show {
+        display: block
+      }
+    }
+  </style>
 </head>
+
 <body>
 
-<div class="topbar">
-  <button class="hamburger" onclick="toggleSidebar()" aria-label="Menu">&#9776;</button>
-  <div class="topbar-logo">iDig <span>Developer Guide</span></div>
-  <div class="topbar-actions">
-    <a href="https://api.softricks.net/idig/docs" target="_blank" style="font-size:13px;font-weight:500">Swagger UI</a>
-    <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">&#9790;</button>
+  <div class="topbar">
+    <button class="hamburger" onclick="toggleSidebar()" aria-label="Menu">&#9776;</button>
+    <div class="topbar-logo">iDig <span>Developer Guide</span></div>
+    <div class="topbar-actions">
+      <a href="https://api.softricks.net/idig/docs" target="_blank" style="font-size:13px;font-weight:500">Swagger
+        UI</a>
+      <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">&#9790;</button>
+    </div>
   </div>
-</div>
 
-<div class="overlay" onclick="toggleSidebar()"></div>
+  <div class="overlay" onclick="toggleSidebar()"></div>
 
-<nav class="sidebar" id="sidebar">
-  <div class="sidebar-section">
-    <div class="sidebar-section-title">Getting Started</div>
-    <a href="#quick-start">Quick Start</a>
-    <a href="#authentication">Authentication</a>
-    <a href="#plans">Plans &amp; Rate Limits</a>
-  </div>
-  <div class="sidebar-section">
-    <div class="sidebar-section-title">DNS</div>
-    <a href="#dns-lookup"><code>GET /</code> DNS Lookup</a>
-    <a href="#dnssec-validate"><code>GET /dnssec/validate</code></a>
-    <a href="#dnssec-health"><code>GET /dnssec/health</code></a>
-    <a href="#propagation"><code>GET /propagation</code></a>
-    <a href="#zone-consistency"><code>GET /zone/consistency</code></a>
-    <a href="#zone-axfr"><code>GET /zone/axfr</code></a>
-    <a href="#ttl-check"><code>GET /ttl/check</code></a>
-    <a href="#resolve-check"><code>GET /resolve/check</code></a>
-    <a href="#diagnose"><code>GET /diagnose</code></a>
-  </div>
-  <div class="sidebar-section">
-    <div class="sidebar-section-title">Email</div>
-    <a href="#email-security"><code>GET /email/security</code></a>
-    <a href="#mx-check"><code>GET /mx/check</code></a>
-    <a href="#blacklist-check"><code>GET /blacklist/check</code></a>
-  </div>
-  <div class="sidebar-section">
-    <div class="sidebar-section-title">Security</div>
-    <a href="#ssl-check"><code>GET /ssl/check</code></a>
-    <a href="#dane-validate"><code>GET /dane/validate</code></a>
-    <a href="#http-check"><code>GET /http/check</code></a>
-  </div>
-  <div class="sidebar-section">
-    <div class="sidebar-section-title">Domain Intel</div>
-    <a href="#whois"><code>GET /whois</code></a>
-    <a href="#domain-status"><code>GET /domain/status</code></a>
-    <a href="#geo"><code>GET /geo</code></a>
-    <a href="#subdomains"><code>GET /subdomains</code></a>
-  </div>
-  <div class="sidebar-section">
-    <div class="sidebar-section-title">Batch &amp; More</div>
-    <a href="#batch"><code>POST /batch</code></a>
-    <a href="#batch-poll"><code>GET /batch/{id}</code></a>
-    <a href="#errors">Error Handling</a>
-    <a href="#ai-agents">Tips for AI Agents</a>
-    <a href="#architecture">Architecture</a>
-  </div>
-</nav>
+  <nav class="sidebar" id="sidebar">
+    <div class="sidebar-section">
+      <div class="sidebar-section-title">Getting Started</div>
+      <a href="#quick-start">Quick Start</a>
+      <a href="#authentication">Authentication</a>
+      <a href="#plans">Plans &amp; Rate Limits</a>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-section-title">DNS</div>
+      <a href="#dns-lookup"><code>GET /</code> DNS Lookup</a>
+      <a href="#dnssec-validate"><code>GET /dnssec/validate</code></a>
+      <a href="#dnssec-health"><code>GET /dnssec/health</code></a>
+      <a href="#propagation"><code>GET /propagation</code></a>
+      <a href="#zone-consistency"><code>GET /zone/consistency</code></a>
+      <a href="#zone-axfr"><code>GET /zone/axfr</code></a>
+      <a href="#ttl-check"><code>GET /ttl/check</code></a>
+      <a href="#resolve-check"><code>GET /resolve/check</code></a>
+      <a href="#diagnose"><code>GET /diagnose</code></a>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-section-title">Email</div>
+      <a href="#email-security"><code>GET /email/security</code></a>
+      <a href="#mx-check"><code>GET /mx/check</code></a>
+      <a href="#blacklist-check"><code>GET /blacklist/check</code></a>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-section-title">Security</div>
+      <a href="#ssl-check"><code>GET /ssl/check</code></a>
+      <a href="#dane-validate"><code>GET /dane/validate</code></a>
+      <a href="#http-check"><code>GET /http/check</code></a>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-section-title">Domain Intel</div>
+      <a href="#whois"><code>GET /whois</code></a>
+      <a href="#domain-status"><code>GET /domain/status</code></a>
+      <a href="#geo"><code>GET /geo</code></a>
+      <a href="#subdomains"><code>GET /subdomains</code></a>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-section-title">Batch &amp; More</div>
+      <a href="#batch"><code>POST /batch</code></a>
+      <a href="#batch-poll"><code>GET /batch/{id}</code></a>
+      <a href="#errors">Error Handling</a>
+      <a href="#ai-agents">Tips for AI Agents</a>
+      <a href="#architecture">Architecture</a>
+    </div>
+  </nav>
 
-<main class="main">
+  <main class="main">
 
-<!-- HERO -->
-<div class="hero" id="top">
-  <h1>iDig API</h1>
-  <p class="subtitle"><strong>iDig</strong> is a comprehensive DNS intelligence and domain security API. It wraps <code>dig</code>, <code>delv</code>, WHOIS, RDAP, and certificate transparency logs into a single authenticated REST API &mdash; designed for developers, security auditors, and AI agents.</p>
-  <span class="badge">Base URL</span> <code>https://api.softricks.net/idig</code><br style="margin-bottom:8px">
-  <span class="badge green" style="margin-top:8px">OpenAPI</span> <a href="https://api.softricks.net/idig/openapi.json"><code>openapi.json</code></a>
-</div>
+    <!-- HERO -->
+    <div class="hero" id="top">
+      <h1>iDig API</h1>
+      <p class="subtitle"><strong>iDig</strong> is a comprehensive DNS intelligence and domain security API. It wraps
+        <code>dig</code>, <code>delv</code>, WHOIS, RDAP, and certificate transparency logs into a single authenticated
+        REST API &mdash; designed for developers, security auditors, and AI agents.</p>
+      <span class="badge">Base URL</span> <code>https://api.softricks.net/idig</code><br style="margin-bottom:8px">
+      <span class="badge green" style="margin-top:8px">OpenAPI</span> <a
+        href="https://api.softricks.net/idig/openapi.json"><code>openapi.json</code></a>
+    </div>
 
-<!-- QUICK START -->
-<h2 id="quick-start">Quick Start</h2>
+    <!-- QUICK START -->
+    <h2 id="quick-start">Quick Start</h2>
 
-<h3>1. Get a Token</h3>
-<pre><code>curl -X POST "https://api.softricks.net/idig/token?scope=api"</code></pre>
-<p>Returns a token hash you'll use for all subsequent requests. Free tier: 100 requests/month.</p>
+    <h3>1. Get a Token</h3>
+    <pre><code>curl -X POST "https://api.softricks.net/idig/token?scope=api"</code></pre>
+    <p>Returns a token hash you'll use for all subsequent requests. Free tier: 100 requests/month.</p>
 
-<h3>2. Make Your First Query</h3>
-<pre><code>curl "https://api.softricks.net/idig/?d=example.com&amp;rr=a&amp;token=YOUR_TOKEN"</code></pre>
+    <h3>2. Make Your First Query</h3>
+    <pre><code>curl "https://api.softricks.net/idig/?d=example.com&amp;rr=a&amp;token=YOUR_TOKEN"</code></pre>
 
-<h3>3. Check Your Usage</h3>
-<pre><code>curl "https://api.softricks.net/idig/usage?token=YOUR_TOKEN"</code></pre>
+    <h3>3. Check Your Usage</h3>
+    <pre><code>curl "https://api.softricks.net/idig/usage?token=YOUR_TOKEN"</code></pre>
 
-<!-- AUTH -->
-<h2 id="authentication">Authentication</h2>
-<p>Every request requires a <code>token</code> query parameter. Tokens are scoped:</p>
-<table>
-  <tr><th>Scope</th><th>Description</th><th>How to Get</th></tr>
-  <tr><td><code>api</code></td><td>General API access</td><td>Self-service via <code>POST /token</code></td></tr>
-  <tr><td><code>mobile</code></td><td>Mobile app access</td><td>Self-service via <code>POST /token</code></td></tr>
-  <tr><td><code>agent</code></td><td>AI agent access</td><td>Requires admin secret</td></tr>
-  <tr><td><code>mcp</code></td><td>MCP protocol access</td><td>Requires admin secret</td></tr>
-</table>
+    <!-- AUTH -->
+    <h2 id="authentication">Authentication</h2>
+    <p>Every request requires a <code>token</code> query parameter. Tokens are scoped:</p>
+    <table>
+      <tr>
+        <th>Scope</th>
+        <th>Description</th>
+        <th>How to Get</th>
+      </tr>
+      <tr>
+        <td><code>api</code></td>
+        <td>General API access</td>
+        <td>Self-service via <code>POST /token</code></td>
+      </tr>
+      <tr>
+        <td><code>mobile</code></td>
+        <td>Mobile app access</td>
+        <td>Self-service via <code>POST /token</code></td>
+      </tr>
+      <tr>
+        <td><code>agent</code></td>
+        <td>AI agent access</td>
+        <td>Requires admin secret</td>
+      </tr>
+      <tr>
+        <td><code>mcp</code></td>
+        <td>MCP protocol access</td>
+        <td>Requires admin secret</td>
+      </tr>
+    </table>
 
-<!-- PLANS -->
-<h2 id="plans">Plans &amp; Rate Limits</h2>
-<table>
-  <tr><th>Plan</th><th>Monthly Requests</th><th>Batch Domains</th><th>Price</th></tr>
-  <tr><td><strong>Free</strong></td><td>100</td><td>N/A</td><td>$0</td></tr>
-  <tr><td><strong>Pro</strong></td><td>10,000</td><td>Up to 10</td><td>~$9/mo</td></tr>
-  <tr><td><strong>Business</strong></td><td>100,000</td><td>Up to 50</td><td>~$29/mo</td></tr>
-  <tr><td><strong>Unlimited</strong></td><td>No cap</td><td>Up to 100</td><td>Admin-only</td></tr>
-</table>
-<p>Usage headers returned with every response:</p>
-<ul>
-  <li><code>X-Idig-Used</code> &mdash; requests used this month</li>
-  <li><code>X-Idig-Limit</code> &mdash; monthly cap</li>
-  <li><code>X-Idig-Remaining</code> &mdash; requests remaining</li>
-</ul>
+    <!-- PLANS -->
+    <h2 id="plans">Plans &amp; Rate Limits</h2>
+    <table>
+      <tr>
+        <th>Plan</th>
+        <th>Monthly Requests</th>
+        <th>Batch Domains</th>
+        <th>Price</th>
+      </tr>
+      <tr>
+        <td><strong>Free</strong></td>
+        <td>100</td>
+        <td>N/A</td>
+        <td>$0</td>
+      </tr>
+      <tr>
+        <td><strong>Pro</strong></td>
+        <td>10,000</td>
+        <td>Up to 10</td>
+        <td>~$9/mo</td>
+      </tr>
+      <tr>
+        <td><strong>Business</strong></td>
+        <td>100,000</td>
+        <td>Up to 50</td>
+        <td>~$29/mo</td>
+      </tr>
+      <tr>
+        <td><strong>Unlimited</strong></td>
+        <td>No cap</td>
+        <td>Up to 100</td>
+        <td>Admin-only</td>
+      </tr>
+    </table>
+    <p>Usage headers returned with every response:</p>
+    <ul>
+      <li><code>X-Idig-Used</code> &mdash; requests used this month</li>
+      <li><code>X-Idig-Limit</code> &mdash; monthly cap</li>
+      <li><code>X-Idig-Remaining</code> &mdash; requests remaining</li>
+    </ul>
 
-<!-- DNS LOOKUP -->
-<h2 id="dns-lookup">DNS Lookup <code>GET /</code></h2>
+    <!-- DNS LOOKUP -->
+    <h2 id="dns-lookup">DNS Lookup <code>GET /</code></h2>
 
-<div class="theory">
-  <strong>What is DNS?</strong> The Domain Name System is the internet's phone book. When you type <code>example.com</code> into a browser, DNS translates that name into an IP address like <code>93.184.216.34</code>. DNS stores many record types beyond IP addresses &mdash; mail servers (MX), text data (TXT), security policies (CAA), service locations (SRV), and more. Each record type serves a different purpose in the internet's infrastructure.
-</div>
+    <div class="theory">
+      <strong>What is DNS?</strong> The Domain Name System is the internet's phone book. When you type
+      <code>example.com</code> into a browser, DNS translates that name into an IP address like
+      <code>93.184.216.34</code>. DNS stores many record types beyond IP addresses &mdash; mail servers (MX), text data
+      (TXT), security policies (CAA), service locations (SRV), and more. Each record type serves a different purpose in
+      the internet's infrastructure.
+    </div>
 
-<p>The foundational endpoint. Query any DNS record type for any domain.</p>
-<pre><code># A records (IPv4 addresses)
+    <p>The foundational endpoint. Query any DNS record type for any domain.</p>
+    <pre><code># A records (IPv4 addresses)
 curl "https://api.softricks.net/idig/?d=example.com&amp;rr=a&amp;token=TOKEN"
 
 # MX records (mail servers)
@@ -232,39 +618,53 @@ curl "https://api.softricks.net/idig/?d=example.com&amp;rr=mx&amp;token=TOKEN"
 # All records at once
 curl "https://api.softricks.net/idig/?d=example.com&amp;rr=all&amp;token=TOKEN"</code></pre>
 
-<p><strong>Supported record types:</strong> <code>a</code> <code>ns</code> <code>soa</code> <code>ds</code> <code>txt</code> <code>cname</code> <code>caa</code> <code>srv</code> <code>tlsa</code> <code>https</code> <code>svcb</code> <code>any</code> <code>all</code></p>
-<p><strong>Options:</strong></p>
-<ul>
-  <li><code>ns=8.8.8.8</code> &mdash; query a specific nameserver</li>
-  <li><code>auth=yes</code> &mdash; query authoritative nameservers directly</li>
-  <li><code>quadA=yes</code> &mdash; include AAAA (IPv6) records alongside A</li>
-</ul>
+    <p><strong>Supported record types:</strong> <code>a</code> <code>ns</code> <code>soa</code> <code>ds</code>
+      <code>txt</code> <code>cname</code> <code>caa</code> <code>srv</code> <code>tlsa</code> <code>https</code>
+      <code>svcb</code> <code>any</code> <code>all</code></p>
+    <p><strong>Options:</strong></p>
+    <ul>
+      <li><code>ns=8.8.8.8</code> &mdash; query a specific nameserver</li>
+      <li><code>auth=yes</code> &mdash; query authoritative nameservers directly</li>
+      <li><code>quadA=yes</code> &mdash; include AAAA (IPv6) records alongside A</li>
+    </ul>
 
-<!-- DNSSEC VALIDATE -->
-<h2 id="dnssec-validate">DNSSEC Validation <code>GET /dnssec/validate</code></h2>
+    <!-- DNSSEC VALIDATE -->
+    <h2 id="dnssec-validate">DNSSEC Validation <code>GET /dnssec/validate</code></h2>
 
-<div class="theory">
-  <strong>What is DNSSEC?</strong> DNSSEC adds cryptographic signatures to DNS responses. Without it, DNS answers are unsigned and can be spoofed &mdash; an attacker could replace the real IP with a malicious one (DNS cache poisoning). DNSSEC creates a chain of trust from the root zone (<code>.</code>) through the TLD (<code>.com</code>) to the domain. Each level signs the level below it. The chain is: <strong>Root &rarr; TLD &rarr; Domain</strong>. If any link breaks, validation fails and the domain becomes "bogus."
-</div>
+    <div class="theory">
+      <strong>What is DNSSEC?</strong> DNSSEC adds cryptographic signatures to DNS responses. Without it, DNS answers
+      are unsigned and can be spoofed &mdash; an attacker could replace the real IP with a malicious one (DNS cache
+      poisoning). DNSSEC creates a chain of trust from the root zone (<code>.</code>) through the TLD
+      (<code>.com</code>) to the domain. Each level signs the level below it. The chain is: <strong>Root &rarr; TLD
+        &rarr; Domain</strong>. If any link breaks, validation fails and the domain becomes "bogus."
+    </div>
 
-<p>Validates the full DNSSEC chain of trust using <code>delv</code> with a local Unbound resolver.</p>
-<pre><code>curl "https://api.softricks.net/idig/dnssec/validate?d=cloudflare.com&amp;token=TOKEN"</code></pre>
-<p>Returns <code>status</code> (secure/insecure/bogus), <code>validated</code> boolean, <code>reason_codes</code>, and <code>remediation</code> steps.</p>
+    <p>Validates the full DNSSEC chain of trust using <code>delv</code> with a local Unbound resolver.</p>
+    <pre><code>curl "https://api.softricks.net/idig/dnssec/validate?d=cloudflare.com&amp;token=TOKEN"</code></pre>
+    <p>Returns <code>status</code> (secure/insecure/bogus), <code>validated</code> boolean, <code>reason_codes</code>,
+      and <code>remediation</code> steps.</p>
 
-<!-- DNSSEC HEALTH -->
-<h2 id="dnssec-health">DNSSEC Health <code>GET /dnssec/health</code></h2>
+    <!-- DNSSEC HEALTH -->
+    <h2 id="dnssec-health">DNSSEC Health <code>GET /dnssec/health</code></h2>
 
-<div class="theory">
-  <strong>Why key management matters:</strong> DNSSEC relies on cryptographic keys (KSK and ZSK) that must be rotated periodically, use strong algorithms, and have valid signatures. Weak keys (RSA-1024, SHA-1) can be brute-forced. Expired signatures make the zone appear "bogus." A mismatch between the DS record at the parent and the DNSKEY in the zone breaks the chain entirely. NSEC records can leak zone contents through "zone walking" if not configured with NSEC3.
-</div>
+    <div class="theory">
+      <strong>Why key management matters:</strong> DNSSEC relies on cryptographic keys (KSK and ZSK) that must be
+      rotated periodically, use strong algorithms, and have valid signatures. Weak keys (RSA-1024, SHA-1) can be
+      brute-forced. Expired signatures make the zone appear "bogus." A mismatch between the DS record at the parent and
+      the DNSKEY in the zone breaks the chain entirely. NSEC records can leak zone contents through "zone walking" if
+      not configured with NSEC3.
+    </div>
 
-<p>Deep key management audit &mdash; algorithm strength, key rollover readiness, signature lifetimes, DS/DNSKEY consistency, and NSEC3 exposure.</p>
-<pre><code>curl "https://api.softricks.net/idig/dnssec/health?d=example.com&amp;token=TOKEN"</code></pre>
+    <p>Deep key management audit &mdash; algorithm strength, key rollover readiness, signature lifetimes, DS/DNSKEY
+      consistency, and NSEC3 exposure.</p>
+    <pre><code>curl "https://api.softricks.net/idig/dnssec/health?d=example.com&amp;token=TOKEN"</code></pre>
 
-<h3>Chain of Trust</h3>
-<p>The response includes a <code>chain</code> array mapping the full DNSSEC trust path from root to your domain. Each link contains the DNSKEY records at that zone, the DS records from the parent, and a <code>chain_intact</code> flag indicating whether the DS&rarr;DNSKEY handoff is valid at that level.</p>
+    <h3>Chain of Trust</h3>
+    <p>The response includes a <code>chain</code> array mapping the full DNSSEC trust path from root to your domain.
+      Each link contains the DNSKEY records at that zone, the DS records from the parent, and a
+      <code>chain_intact</code> flag indicating whether the DS&rarr;DNSKEY handoff is valid at that level.</p>
 
-<pre><code>"chain": [
+    <pre><code>"chain": [
   {
     "zone": ".",
     "level": "root",
@@ -292,293 +692,397 @@ curl "https://api.softricks.net/idig/?d=example.com&amp;rr=all&amp;token=TOKEN"<
 ],
 "chain_intact": true</code></pre>
 
-<ul>
-  <li><strong><code>chain_intact</code></strong> (top-level) &mdash; <code>true</code> if every link validates end-to-end</li>
-  <li><strong><code>matching_key_tags</code></strong> &mdash; which DNSKEY key tags match the DS from the parent</li>
-  <li><strong><code>broken: true</code></strong> &mdash; appears on the first link where the chain fails, pinpointing the exact break</li>
-  <li>If a link breaks, <code>warnings</code> and <code>recommendations</code> are added with actionable guidance</li>
-</ul>
-<p>This data is sufficient to render a DNSViz-style visual diagram of the chain.</p>
+    <ul>
+      <li><strong><code>chain_intact</code></strong> (top-level) &mdash; <code>true</code> if every link validates
+        end-to-end</li>
+      <li><strong><code>matching_key_tags</code></strong> &mdash; which DNSKEY key tags match the DS from the parent
+      </li>
+      <li><strong><code>broken: true</code></strong> &mdash; appears on the first link where the chain fails,
+        pinpointing the exact break</li>
+      <li>If a link breaks, <code>warnings</code> and <code>recommendations</code> are added with actionable guidance
+      </li>
+    </ul>
 
-<!-- EMAIL SECURITY -->
-<h2 id="email-security">Email Security Audit <code>GET /email/security</code></h2>
+    <!-- EMAIL SECURITY -->
+    <h2 id="email-security">Email Security Audit <code>GET /email/security</code></h2>
 
-<div class="theory">
-  <strong>Email authentication in a nutshell:</strong> Email was designed without sender verification. Anyone can send email claiming to be from your domain. Four standards fix this:
-  <ul>
-    <li><strong>SPF</strong> (Sender Policy Framework) &mdash; a DNS TXT record listing which IPs can send email for your domain. The <code>-all</code> qualifier means "reject everything else."</li>
-    <li><strong>DKIM</strong> (DomainKeys Identified Mail) &mdash; the sending server cryptographically signs each email. The public key is in DNS. Receivers verify the signature to confirm the email wasn't altered.</li>
-    <li><strong>DMARC</strong> (Domain-based Message Authentication, Reporting &amp; Conformance) &mdash; tells receivers what to do when SPF and DKIM fail: <code>none</code> (report), <code>quarantine</code> (spam), or <code>reject</code> (drop). Also enables aggregate reporting.</li>
-    <li><strong>BIMI</strong> (Brand Indicators for Message Identification) &mdash; a DNS TXT record at <code>default._bimi.&lt;domain&gt;</code> pointing to your brand's SVG logo and optional VMC certificate. Gmail, Yahoo, and Apple Mail display the logo next to authenticated emails.</li>
-  </ul>
-</div>
+    <div class="theory">
+      <strong>Email authentication in a nutshell:</strong> Email was designed without sender verification. Anyone can
+      send email claiming to be from your domain. Four standards fix this:
+      <ul>
+        <li><strong>SPF</strong> (Sender Policy Framework) &mdash; a DNS TXT record listing which IPs can send email for
+          your domain. The <code>-all</code> qualifier means "reject everything else."</li>
+        <li><strong>DKIM</strong> (DomainKeys Identified Mail) &mdash; the sending server cryptographically signs each
+          email. The public key is in DNS. Receivers verify the signature to confirm the email wasn't altered.</li>
+        <li><strong>DMARC</strong> (Domain-based Message Authentication, Reporting &amp; Conformance) &mdash; tells
+          receivers what to do when SPF and DKIM fail: <code>none</code> (report), <code>quarantine</code> (spam), or
+          <code>reject</code> (drop). Also enables aggregate reporting.</li>
+        <li><strong>BIMI</strong> (Brand Indicators for Message Identification) &mdash; a DNS TXT record at
+          <code>default._bimi.&lt;domain&gt;</code> pointing to your brand's SVG logo and optional VMC certificate.
+          Gmail, Yahoo, and Apple Mail display the logo next to authenticated emails.</li>
+      </ul>
+    </div>
 
-<p>Four-pillar email authentication check: <strong>SPF + DKIM + DMARC + BIMI</strong>. Returns an <strong>A&ndash;F grade</strong>.</p>
-<pre><code>curl "https://api.softricks.net/idig/email/security?d=example.com&amp;token=TOKEN"</code></pre>
-<ul>
-  <li><strong>SPF</strong> &mdash; record syntax, qualifier, DNS lookup count (max 10)</li>
-  <li><strong>DKIM</strong> &mdash; probes 20+ selectors including provider-specific ones, key type/size</li>
-  <li><strong>DMARC</strong> &mdash; policy enforcement, reporting addresses, alignment mode</li>
-  <li><strong>BIMI</strong> &mdash; brand logo URL and VMC presence</li>
-</ul>
+    <p>Four-pillar email authentication check: <strong>SPF + DKIM + DMARC + BIMI</strong>. Returns an <strong>A&ndash;F
+        grade</strong>.</p>
+    <pre><code>curl "https://api.softricks.net/idig/email/security?d=example.com&amp;token=TOKEN"</code></pre>
+    <ul>
+      <li><strong>SPF</strong> &mdash; record syntax, qualifier, DNS lookup count (max 10)</li>
+      <li><strong>DKIM</strong> &mdash; probes 20+ selectors including provider-specific ones, key type/size</li>
+      <li><strong>DMARC</strong> &mdash; policy enforcement, reporting addresses, alignment mode</li>
+      <li><strong>BIMI</strong> &mdash; brand logo URL and VMC presence</li>
+    </ul>
 
-<!-- MX CHECK -->
-<h2 id="mx-check">MX Health <code>GET /mx/check</code></h2>
+    <!-- MX CHECK -->
+    <h2 id="mx-check">MX Health <code>GET /mx/check</code></h2>
 
-<div class="theory">
-  <strong>How email routing works:</strong> MX records tell the world which servers accept email for your domain. Mail servers query MX records, sort by priority (lower = preferred), and connect to the best available. Common misconfigurations: pointing MX to an IP instead of a hostname (RFC 5321 violation), CNAME as MX target (RFC 2181 violation), and single MX server (no redundancy).
-</div>
+    <div class="theory">
+      <strong>How email routing works:</strong> MX records tell the world which servers accept email for your domain.
+      Mail servers query MX records, sort by priority (lower = preferred), and connect to the best available. Common
+      misconfigurations: pointing MX to an IP instead of a hostname (RFC 5321 violation), CNAME as MX target (RFC 2181
+      violation), and single MX server (no redundancy).
+    </div>
 
-<pre><code>curl "https://api.softricks.net/idig/mx/check?d=example.com&amp;token=TOKEN"</code></pre>
+    <pre><code>curl "https://api.softricks.net/idig/mx/check?d=example.com&amp;token=TOKEN"</code></pre>
 
-<!-- BLACKLIST -->
-<h2 id="blacklist-check">Blacklist Check <code>GET /blacklist/check</code></h2>
+    <!-- BLACKLIST -->
+    <h2 id="blacklist-check">Blacklist Check <code>GET /blacklist/check</code></h2>
 
-<div class="theory">
-  <strong>What are DNS blacklists?</strong> DNSBLs are databases of IPs known to send spam. Email servers query these lists to check sender IPs. Major lists include Spamhaus, Barracuda, SORBS, and SpamCop. Being listed on even one major blacklist severely impacts email deliverability. Listings can happen from compromised servers, open relays, or shared hosting neighbors.
-</div>
+    <div class="theory">
+      <strong>What are DNS blacklists?</strong> DNSBLs are databases of IPs known to send spam. Email servers query
+      these lists to check sender IPs. Major lists include Spamhaus, Barracuda, SORBS, and SpamCop. Being listed on even
+      one major blacklist severely impacts email deliverability. Listings can happen from compromised servers, open
+      relays, or shared hosting neighbors.
+    </div>
 
-<pre><code>curl "https://api.softricks.net/idig/blacklist/check?d=example.com&amp;token=TOKEN"</code></pre>
+    <pre><code>curl "https://api.softricks.net/idig/blacklist/check?d=example.com&amp;token=TOKEN"</code></pre>
 
-<!-- SSL -->
-<h2 id="ssl-check">SSL/TLS Certificate <code>GET /ssl/check</code></h2>
+    <!-- SSL -->
+    <h2 id="ssl-check">SSL/TLS Certificate <code>GET /ssl/check</code></h2>
 
-<div class="theory">
-  <strong>What is SSL/TLS?</strong> TLS encrypts the connection between browser and server (the padlock icon). A TLS certificate proves the server's identity &mdash; issued by a trusted Certificate Authority (CA), it contains the domain name, issuer, validity period, and public key. Expired certificates cause browser warnings. SANs (Subject Alternative Names) let one cert cover multiple domains.
-</div>
+    <div class="theory">
+      <strong>What is SSL/TLS?</strong> TLS encrypts the connection between browser and server (the padlock icon). A TLS
+      certificate proves the server's identity &mdash; issued by a trusted Certificate Authority (CA), it contains the
+      domain name, issuer, validity period, and public key. Expired certificates cause browser warnings. SANs (Subject
+      Alternative Names) let one cert cover multiple domains.
+    </div>
 
-<pre><code>curl "https://api.softricks.net/idig/ssl/check?d=example.com&amp;token=TOKEN"</code></pre>
-<p>Returns issuer, validity window, SANs, chain depth, and days until expiry.</p>
+    <pre><code>curl "https://api.softricks.net/idig/ssl/check?d=example.com&amp;token=TOKEN"</code></pre>
+    <p>Returns issuer, validity window, SANs, chain depth, and days until expiry.</p>
 
-<!-- DANE -->
-<h2 id="dane-validate">DANE/TLSA Validation <code>GET /dane/validate</code></h2>
+    <!-- DANE -->
+    <h2 id="dane-validate">DANE/TLSA Validation <code>GET /dane/validate</code></h2>
 
-<div class="theory">
-  <strong>What is DANE?</strong> DANE uses DNSSEC-signed TLSA records to pin a specific TLS certificate or CA to a domain. Instead of trusting any of hundreds of CAs, the domain owner declares in DNS exactly which certificate should be used. This prevents rogue CA attacks. DANE is especially important for SMTP server-to-server encryption where traditional certificate validation is weak.
-</div>
+    <div class="theory">
+      <strong>What is DANE?</strong> DANE uses DNSSEC-signed TLSA records to pin a specific TLS certificate or CA to a
+      domain. Instead of trusting any of hundreds of CAs, the domain owner declares in DNS exactly which certificate
+      should be used. This prevents rogue CA attacks. DANE is especially important for SMTP server-to-server encryption
+      where traditional certificate validation is weak.
+    </div>
 
-<pre><code>curl "https://api.softricks.net/idig/dane/validate?d=example.com&amp;token=TOKEN"</code></pre>
+    <pre><code>curl "https://api.softricks.net/idig/dane/validate?d=example.com&amp;token=TOKEN"</code></pre>
 
-<!-- HTTP CHECK -->
-<h2 id="http-check">HTTP/HTTPS Reachability <code>GET /http/check</code></h2>
+    <!-- HTTP CHECK -->
+    <h2 id="http-check">HTTP/HTTPS Reachability <code>GET /http/check</code></h2>
 
-<div class="theory">
-  <strong>Why test HTTP/HTTPS?</strong> DNS can be perfect but the web server might be down or misconfigured. Best practice: HTTP (port 80) should 301-redirect to HTTPS (port 443). HTTPS should respond with a valid certificate. This check catches missing redirects, expired certs, and servers that are DNS-reachable but not web-reachable.
-</div>
+    <div class="theory">
+      <strong>Why test HTTP/HTTPS?</strong> DNS can be perfect but the web server might be down or misconfigured. Best
+      practice: HTTP (port 80) should 301-redirect to HTTPS (port 443). HTTPS should respond with a valid certificate.
+      This check catches missing redirects, expired certs, and servers that are DNS-reachable but not web-reachable.
+    </div>
 
-<pre><code>curl "https://api.softricks.net/idig/http/check?d=example.com&amp;token=TOKEN"</code></pre>
+    <pre><code>curl "https://api.softricks.net/idig/http/check?d=example.com&amp;token=TOKEN"</code></pre>
 
-<!-- WHOIS -->
-<h2 id="whois">WHOIS / RDAP <code>GET /whois</code></h2>
+    <!-- WHOIS -->
+    <h2 id="whois">WHOIS / RDAP <code>GET /whois</code></h2>
 
-<div class="theory">
-  <strong>What is WHOIS/RDAP?</strong> WHOIS is the original protocol for querying domain registration info &mdash; who registered it, when, which registrar, when it expires. It's a plain-text protocol from the 1980s with no standard format. <strong>RDAP</strong> is its modern replacement: structured JSON, HTTPS, and less aggressive rate limiting. iDig uses RDAP as primary for 22+ TLDs with WHOIS fallback.
-</div>
+    <div class="theory">
+      <strong>What is WHOIS/RDAP?</strong> WHOIS is the original protocol for querying domain registration info &mdash;
+      who registered it, when, which registrar, when it expires. It's a plain-text protocol from the 1980s with no
+      standard format. <strong>RDAP</strong> is its modern replacement: structured JSON, HTTPS, and less aggressive rate
+      limiting. iDig uses RDAP as primary for 22+ TLDs with WHOIS fallback.
+    </div>
 
-<pre><code>curl "https://api.softricks.net/idig/whois?d=example.com&amp;token=TOKEN"</code></pre>
-<p>Returns registrar, dates, nameservers, DNSSEC status, and a <code>source</code> field ("rdap" or "whois").</p>
+    <pre><code>curl "https://api.softricks.net/idig/whois?d=example.com&amp;token=TOKEN"</code></pre>
+    <p>Returns registrar, dates, nameservers, DNSSEC status, and a <code>source</code> field ("rdap" or "whois").</p>
 
-<!-- DOMAIN STATUS -->
-<h2 id="domain-status">Domain Status <code>GET /domain/status</code></h2>
+    <!-- DOMAIN STATUS -->
+    <h2 id="domain-status">Domain Status <code>GET /domain/status</code></h2>
 
-<div class="theory">
-  <strong>What are EPP status codes?</strong> EPP is the standard for managing domain names. Every domain has status flags controlling allowed operations. <code>clientTransferProhibited</code> prevents unauthorized transfers. <code>serverDeleteProhibited</code> locks against deletion at the registry level. Without these locks, a compromised registrar account could transfer your domain in minutes.
-</div>
+    <div class="theory">
+      <strong>What are EPP status codes?</strong> EPP is the standard for managing domain names. Every domain has status
+      flags controlling allowed operations. <code>clientTransferProhibited</code> prevents unauthorized transfers.
+      <code>serverDeleteProhibited</code> locks against deletion at the registry level. Without these locks, a
+      compromised registrar account could transfer your domain in minutes.
+    </div>
 
-<pre><code>curl "https://api.softricks.net/idig/domain/status?d=example.com&amp;token=TOKEN"</code></pre>
+    <pre><code>curl "https://api.softricks.net/idig/domain/status?d=example.com&amp;token=TOKEN"</code></pre>
 
-<!-- GEO -->
-<h2 id="geo">IP Geolocation <code>GET /geo</code></h2>
+    <!-- GEO -->
+    <h2 id="geo">IP Geolocation <code>GET /geo</code></h2>
 
-<div class="theory">
-  <strong>What is IP geolocation?</strong> IP addresses are allocated from regional blocks assigned to ISPs and data centers. Geolocation databases map these ranges to physical locations. Useful for verifying hosting regions, detecting unexpected changes, and understanding your infrastructure's geographic footprint. ASN data reveals which network operator owns the IP block.
-</div>
+    <div class="theory">
+      <strong>What is IP geolocation?</strong> IP addresses are allocated from regional blocks assigned to ISPs and data
+      centers. Geolocation databases map these ranges to physical locations. Useful for verifying hosting regions,
+      detecting unexpected changes, and understanding your infrastructure's geographic footprint. ASN data reveals which
+      network operator owns the IP block.
+    </div>
 
-<pre><code>curl "https://api.softricks.net/idig/geo?d=example.com&amp;token=TOKEN"</code></pre>
-<p>Returns country, city, ISP, ASN, and hosting provider detection.</p>
+    <pre><code>curl "https://api.softricks.net/idig/geo?d=example.com&amp;token=TOKEN"</code></pre>
+    <p>Returns country, city, ISP, ASN, and hosting provider detection.</p>
 
-<!-- PROPAGATION -->
-<h2 id="propagation">DNS Propagation <code>GET /propagation</code></h2>
+    <!-- PROPAGATION -->
+    <h2 id="propagation">DNS Propagation <code>GET /propagation</code></h2>
 
-<div class="theory">
-  <strong>How DNS propagation works:</strong> DNS changes don't take effect instantly. Resolvers worldwide cache records for their TTL duration. Until the old TTL expires, different resolvers may return different answers. This "propagation delay" ranges from minutes to days depending on TTL. During migrations, verify that all major resolvers see the new record.
-</div>
+    <div class="theory">
+      <strong>How DNS propagation works:</strong> DNS changes don't take effect instantly. Resolvers worldwide cache
+      records for their TTL duration. Until the old TTL expires, different resolvers may return different answers. This
+      "propagation delay" ranges from minutes to days depending on TTL. During migrations, verify that all major
+      resolvers see the new record.
+    </div>
 
-<pre><code>curl "https://api.softricks.net/idig/propagation?d=example.com&amp;token=TOKEN"</code></pre>
-<p>Checks answers across 8 global resolvers: Google, Cloudflare, Quad9, OpenDNS, and more.</p>
+    <pre><code>curl "https://api.softricks.net/idig/propagation?d=example.com&amp;token=TOKEN"</code></pre>
+    <p>Checks answers across 8 global resolvers: Google, Cloudflare, Quad9, OpenDNS, and more.</p>
 
-<!-- ZONE CONSISTENCY -->
-<h2 id="zone-consistency">Zone Consistency <code>GET /zone/consistency</code></h2>
+    <!-- ZONE CONSISTENCY -->
+    <h2 id="zone-consistency">Zone Consistency <code>GET /zone/consistency</code></h2>
 
-<div class="theory">
-  <strong>Why zone consistency matters:</strong> Most domains have 2+ authoritative nameservers for redundancy. They must serve identical data. A stale SOA serial means outdated records &mdash; some users get old IPs, others get new ones. SOA serial mismatches are the #1 cause of "works for me but not my users" DNS problems.
-</div>
+    <div class="theory">
+      <strong>Why zone consistency matters:</strong> Most domains have 2+ authoritative nameservers for redundancy. They
+      must serve identical data. A stale SOA serial means outdated records &mdash; some users get old IPs, others get
+      new ones. SOA serial mismatches are the #1 cause of "works for me but not my users" DNS problems.
+    </div>
 
-<pre><code>curl "https://api.softricks.net/idig/zone/consistency?d=example.com&amp;token=TOKEN"</code></pre>
+    <pre><code>curl "https://api.softricks.net/idig/zone/consistency?d=example.com&amp;token=TOKEN"</code></pre>
 
-<!-- AXFR -->
-<h2 id="zone-axfr">AXFR Zone Transfer <code>GET /zone/axfr</code></h2>
+    <!-- AXFR -->
+    <h2 id="zone-axfr">AXFR Zone Transfer <code>GET /zone/axfr</code></h2>
 
-<div class="theory">
-  <strong>What is AXFR?</strong> AXFR lets a secondary nameserver request the complete zone file from the primary. If open to the public, anyone can download your entire DNS zone &mdash; every subdomain, internal hostname, and record. A goldmine for attackers. AXFR should always be restricted to known secondary NS IPs.
-</div>
+    <div class="theory">
+      <strong>What is AXFR?</strong> AXFR lets a secondary nameserver request the complete zone file from the primary.
+      If open to the public, anyone can download your entire DNS zone &mdash; every subdomain, internal hostname, and
+      record. A goldmine for attackers. AXFR should always be restricted to known secondary NS IPs.
+    </div>
 
-<pre><code>curl "https://api.softricks.net/idig/zone/axfr?d=example.com&amp;token=TOKEN"</code></pre>
+    <pre><code>curl "https://api.softricks.net/idig/zone/axfr?d=example.com&amp;token=TOKEN"</code></pre>
 
-<!-- TTL -->
-<h2 id="ttl-check">TTL Advisory <code>GET /ttl/check</code></h2>
+    <!-- TTL -->
+    <h2 id="ttl-check">TTL Advisory <code>GET /ttl/check</code></h2>
 
-<div class="theory">
-  <strong>What is TTL?</strong> Time To Live tells resolvers how long to cache a record. High TTLs (86400 = 1 day) reduce query load but slow down changes. Low TTLs (60 = 1 min) allow fast changes but increase latency. A records for HA services should be ~300s; NS/SOA can be 3600&ndash;86400s. Lower TTLs at least 24h before a migration.
-</div>
+    <div class="theory">
+      <strong>What is TTL?</strong> Time To Live tells resolvers how long to cache a record. High TTLs (86400 = 1 day)
+      reduce query load but slow down changes. Low TTLs (60 = 1 min) allow fast changes but increase latency. A records
+      for HA services should be ~300s; NS/SOA can be 3600&ndash;86400s. Lower TTLs at least 24h before a migration.
+    </div>
 
-<pre><code>curl "https://api.softricks.net/idig/ttl/check?d=example.com&amp;token=TOKEN"</code></pre>
+    <pre><code>curl "https://api.softricks.net/idig/ttl/check?d=example.com&amp;token=TOKEN"</code></pre>
 
-<!-- SUBDOMAINS -->
-<h2 id="subdomains">Subdomain Discovery <code>GET /subdomains</code></h2>
+    <!-- SUBDOMAINS -->
+    <h2 id="subdomains">Subdomain Discovery <code>GET /subdomains</code></h2>
 
-<div class="theory">
-  <strong>Why subdomain discovery matters:</strong> Subdomains reveal forgotten infrastructure &mdash; old staging servers, unpatched admin panels, exposed internal tools. Two techniques: (1) <strong>Wordlist brute-force</strong> tries common names like <code>mail</code>, <code>vpn</code>, <code>staging</code>. (2) <strong>Certificate Transparency logs</strong> are public records of every TLS certificate issued. Since certs list covered domains, CT logs reveal subdomains no wordlist would guess. crt.sh is the most widely used CT search engine.
-</div>
+    <div class="theory">
+      <strong>Why subdomain discovery matters:</strong> Subdomains reveal forgotten infrastructure &mdash; old staging
+      servers, unpatched admin panels, exposed internal tools. Two techniques: (1) <strong>Wordlist brute-force</strong>
+      tries common names like <code>mail</code>, <code>vpn</code>, <code>staging</code>. (2) <strong>Certificate
+        Transparency logs</strong> are public records of every TLS certificate issued. Since certs list covered domains,
+      CT logs reveal subdomains no wordlist would guess. crt.sh is the most widely used CT search engine.
+    </div>
 
-<pre><code>curl "https://api.softricks.net/idig/subdomains?d=example.com&amp;token=TOKEN"</code></pre>
-<p>Results include source attribution: "wordlist", "crt.sh", or "both".</p>
+    <pre><code>curl "https://api.softricks.net/idig/subdomains?d=example.com&amp;token=TOKEN"</code></pre>
+    <p>Results include source attribution: "wordlist", "crt.sh", or "both".</p>
 
-<!-- RESOLVE CHECK -->
-<h2 id="resolve-check">Resolution Health <code>GET /resolve/check</code></h2>
+    <!-- RESOLVE CHECK -->
+    <h2 id="resolve-check">Resolution Health <code>GET /resolve/check</code></h2>
 
-<div class="theory">
-  <strong>What can go wrong?</strong> DNS resolution can fail in several ways: <strong>NXDOMAIN</strong> = domain doesn't exist. <strong>SERVFAIL</strong> = nameserver error (often DNSSEC). <strong>NODATA</strong> = domain exists but no records of requested type. <strong>Timeout</strong> = nameservers unreachable. Each mode has different causes and fixes.
-</div>
+    <div class="theory">
+      <strong>What can go wrong?</strong> DNS resolution can fail in several ways: <strong>NXDOMAIN</strong> = domain
+      doesn't exist. <strong>SERVFAIL</strong> = nameserver error (often DNSSEC). <strong>NODATA</strong> = domain
+      exists but no records of requested type. <strong>Timeout</strong> = nameservers unreachable. Each mode has
+      different causes and fixes.
+    </div>
 
-<pre><code>curl "https://api.softricks.net/idig/resolve/check?d=example.com&amp;token=TOKEN"</code></pre>
+    <pre><code>curl "https://api.softricks.net/idig/resolve/check?d=example.com&amp;token=TOKEN"</code></pre>
 
-<!-- DIAGNOSE -->
-<h2 id="diagnose">All-in-One Diagnostic <code>GET /diagnose</code></h2>
+    <!-- DIAGNOSE -->
+    <h2 id="diagnose">All-in-One Diagnostic <code>GET /diagnose</code></h2>
 
-<div class="theory">
-  <strong>When to use this:</strong> The <code>/diagnose</code> endpoint is the best starting point when you're unsure what's wrong. It runs resolution checks and DNSSEC validation, synthesizing results into three yes/no questions. This is the endpoint AI agents should call first.
-</div>
+    <div class="theory">
+      <strong>When to use this:</strong> The <code>/diagnose</code> endpoint is the best starting point when you're
+      unsure what's wrong. It runs resolution checks and DNSSEC validation, synthesizing results into three yes/no
+      questions. This is the endpoint AI agents should call first.
+    </div>
 
-<p>Answers three questions:</p>
-<ol>
-  <li>Are there resolution errors?</li>
-  <li>Is DNSSEC validated?</li>
-  <li>What should be fixed?</li>
-</ol>
-<pre><code>curl "https://api.softricks.net/idig/diagnose?d=example.com&amp;token=TOKEN"</code></pre>
+    <p>Answers three questions:</p>
+    <ol>
+      <li>Are there resolution errors?</li>
+      <li>Is DNSSEC validated?</li>
+      <li>What should be fixed?</li>
+    </ol>
+    <pre><code>curl "https://api.softricks.net/idig/diagnose?d=example.com&amp;token=TOKEN"</code></pre>
 
-<!-- BATCH -->
-<h2 id="batch">Batch Mode <code>POST /batch</code></h2>
+    <!-- BATCH -->
+    <h2 id="batch">Batch Mode <code>POST /batch</code></h2>
 
-<div class="theory">
-  <strong>Batch architecture:</strong> Jobs are processed asynchronously via SQS and a separate Lambda worker. The API validates your plan, deducts quota upfront (domains &times; checks), creates a DynamoDB job, and pushes to SQS. The worker runs all checks in parallel with asyncio and writes results back. Poll with the job ID until <code>complete</code>.
-</div>
+    <div class="theory">
+      <strong>Batch architecture:</strong> Jobs are processed asynchronously via SQS and a separate Lambda worker. The
+      API validates your plan, deducts quota upfront (domains &times; checks), creates a DynamoDB job, and pushes to
+      SQS. The worker runs all checks in parallel with asyncio and writes results back. Poll with the job ID until
+      <code>complete</code>.
+    </div>
 
-<p>Run multiple checks across multiple domains. Requires <strong>Pro plan or higher</strong>.</p>
-<pre><code>curl -X POST "https://api.softricks.net/idig/batch?token=TOKEN" \
+    <p>Run multiple checks across multiple domains. Requires <strong>Pro plan or higher</strong>.</p>
+    <pre><code>curl -X POST "https://api.softricks.net/idig/batch?token=TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
     "domains": ["example.com", "example.org"],
     "checks": ["dns", "ssl", "mx", "email"]
   }'</code></pre>
 
-<p><strong>All 19 checks:</strong> <code>dns</code> <code>ssl</code> <code>mx</code> <code>email</code> <code>geo</code> <code>ttl</code> <code>whois</code> <code>blacklist</code> <code>http</code> <code>subdomains</code> <code>dane</code> <code>dnssec_validate</code> <code>dnssec_health</code> <code>zone_consistency</code> <code>axfr</code> <code>propagation</code> <code>domain_status</code> <code>resolve</code> <code>diagnose</code></p>
+    <p><strong>All 19 checks:</strong> <code>dns</code> <code>ssl</code> <code>mx</code> <code>email</code>
+      <code>geo</code> <code>ttl</code> <code>whois</code> <code>blacklist</code> <code>http</code>
+      <code>subdomains</code> <code>dane</code> <code>dnssec_validate</code> <code>dnssec_health</code>
+      <code>zone_consistency</code> <code>axfr</code> <code>propagation</code> <code>domain_status</code>
+      <code>resolve</code> <code>diagnose</code></p>
 
-<h3 id="batch-poll">Poll Results <code>GET /batch/{job_id}</code></h3>
-<pre><code>curl "https://api.softricks.net/idig/batch/JOB_ID?token=TOKEN"</code></pre>
-<p>Quota cost: 1 request per domain &times; check (deducted at submission).</p>
+    <h3 id="batch-poll">Poll Results <code>GET /batch/{job_id}</code></h3>
+    <pre><code>curl "https://api.softricks.net/idig/batch/JOB_ID?token=TOKEN"</code></pre>
+    <p>Quota cost: 1 request per domain &times; check (deducted at submission).</p>
 
-<!-- ERRORS -->
-<h2 id="errors">Error Handling</h2>
-<table>
-  <tr><th>Status</th><th>Meaning</th></tr>
-  <tr><td><code>400</code></td><td>Bad request (invalid domain, too many batch domains, etc.)</td></tr>
-  <tr><td><code>403</code></td><td>Invalid or missing token</td></tr>
-  <tr><td><code>429</code></td><td>Rate limit or monthly quota exceeded</td></tr>
-  <tr><td><code>500</code></td><td>Server error (missing dependency, unexpected failure)</td></tr>
-  <tr><td><code>503</code></td><td>Token store temporarily unavailable</td></tr>
-</table>
+    <!-- ERRORS -->
+    <h2 id="errors">Error Handling</h2>
+    <table>
+      <tr>
+        <th>Status</th>
+        <th>Meaning</th>
+      </tr>
+      <tr>
+        <td><code>400</code></td>
+        <td>Bad request (invalid domain, too many batch domains, etc.)</td>
+      </tr>
+      <tr>
+        <td><code>403</code></td>
+        <td>Invalid or missing token</td>
+      </tr>
+      <tr>
+        <td><code>429</code></td>
+        <td>Rate limit or monthly quota exceeded</td>
+      </tr>
+      <tr>
+        <td><code>500</code></td>
+        <td>Server error (missing dependency, unexpected failure)</td>
+      </tr>
+      <tr>
+        <td><code>503</code></td>
+        <td>Token store temporarily unavailable</td>
+      </tr>
+    </table>
 
-<!-- AI AGENTS -->
-<h2 id="ai-agents">Tips for AI Agents</h2>
-<ul>
-  <li>Read <code>/openapi.json</code> to discover all endpoints and parameters.</li>
-  <li>Use <code>/diagnose</code> as a first pass &mdash; covers resolution + DNSSEC in one call.</li>
-  <li>Use <code>/batch</code> for bulk analysis across multiple domains.</li>
-  <li>Check <code>/email/security</code> for a complete email authentication profile.</li>
-  <li>The <code>rr=all</code> parameter on <code>/</code> returns every DNS record type in one request.</li>
-  <li>BIMI recommendations only appear when SPF/DKIM/DMARC are already solid.</li>
-</ul>
+    <!-- AI AGENTS -->
+    <h2 id="ai-agents">Tips for AI Agents</h2>
+    <ul>
+      <li>Read <code>/openapi.json</code> to discover all endpoints and parameters.</li>
+      <li>Use <code>/diagnose</code> as a first pass &mdash; covers resolution + DNSSEC in one call.</li>
+      <li>Use <code>/batch</code> for bulk analysis across multiple domains.</li>
+      <li>Check <code>/email/security</code> for a complete email authentication profile.</li>
+      <li>The <code>rr=all</code> parameter on <code>/</code> returns every DNS record type in one request.</li>
+      <li>BIMI recommendations only appear when SPF/DKIM/DMARC are already solid.</li>
+    </ul>
 
-<!-- ARCHITECTURE -->
-<h2 id="architecture">Architecture</h2>
-<table>
-  <tr><th>Component</th><th>Technology</th></tr>
-  <tr><td>Runtime</td><td>AWS Lambda (Python 3.11, ARM64)</td></tr>
-  <tr><td>Gateway</td><td>API Gateway HTTP API</td></tr>
-  <tr><td>DNS Tools</td><td><code>dig</code>, <code>delv</code>, Unbound (local recursive resolver)</td></tr>
-  <tr><td>WHOIS/RDAP</td><td>RDAP primary (22 TLD bootstrap), <code>whois</code> fallback</td></tr>
-  <tr><td>Certificate Transparency</td><td>crt.sh JSON API</td></tr>
-  <tr><td>Batch Processing</td><td>SQS + DynamoDB for async job management</td></tr>
-  <tr><td>Token Store</td><td>DynamoDB with TTL-based auto-cleanup</td></tr>
-</table>
+    <!-- ARCHITECTURE -->
+    <h2 id="architecture">Architecture</h2>
+    <table>
+      <tr>
+        <th>Component</th>
+        <th>Technology</th>
+      </tr>
+      <tr>
+        <td>Runtime</td>
+        <td>AWS Lambda (Python 3.11, ARM64)</td>
+      </tr>
+      <tr>
+        <td>Gateway</td>
+        <td>API Gateway HTTP API</td>
+      </tr>
+      <tr>
+        <td>DNS Tools</td>
+        <td><code>dig</code>, <code>delv</code>, Unbound (local recursive resolver)</td>
+      </tr>
+      <tr>
+        <td>WHOIS/RDAP</td>
+        <td>RDAP primary (22 TLD bootstrap), <code>whois</code> fallback</td>
+      </tr>
+      <tr>
+        <td>Certificate Transparency</td>
+        <td>crt.sh JSON API</td>
+      </tr>
+      <tr>
+        <td>Batch Processing</td>
+        <td>SQS + DynamoDB for async job management</td>
+      </tr>
+      <tr>
+        <td>Token Store</td>
+        <td>DynamoDB with TTL-based auto-cleanup</td>
+      </tr>
+    </table>
 
-<div style="margin-top:60px;padding-top:24px;border-top:1px solid var(--border);color:var(--text-dim);font-size:13px">
-  <p>&copy; Softricks &mdash; <a href="https://api.softricks.net/idig/docs">Swagger UI</a> &middot; <a href="https://api.softricks.net/idig/openapi.json">OpenAPI Spec</a></p>
-</div>
+    <div
+      style="margin-top:60px;padding-top:24px;border-top:1px solid var(--border);color:var(--text-dim);font-size:13px">
+      <p>&copy; Softricks &mdash; <a href="https://api.softricks.net/idig/docs">Swagger UI</a> &middot; <a
+          href="https://api.softricks.net/idig/openapi.json">OpenAPI Spec</a></p>
+    </div>
 
-</main>
+  </main>
 
-<script>
-function toggleTheme(){
-  const html=document.documentElement;
-  const t=html.getAttribute('data-theme')==='dark'?'light':'dark';
-  html.setAttribute('data-theme',t);
-  localStorage.setItem('idig-theme',t);
-}
-function toggleSidebar(){
-  document.getElementById('sidebar').classList.toggle('open');
-  document.querySelector('.overlay').classList.toggle('show');
-}
-// Restore theme
-const saved=localStorage.getItem('idig-theme');
-if(saved)document.documentElement.setAttribute('data-theme',saved);
-else if(window.matchMedia('(prefers-color-scheme:dark)').matches)document.documentElement.setAttribute('data-theme','dark');
-
-// Active sidebar link on scroll
-const observer=new IntersectionObserver(entries=>{
-  entries.forEach(e=>{
-    if(e.isIntersecting){
-      document.querySelectorAll('.sidebar a').forEach(a=>a.classList.remove('active'));
-      const link=document.querySelector('.sidebar a[href="#'+e.target.id+'"]');
-      if(link)link.classList.add('active');
+  <script>
+    function toggleTheme() {
+      const html = document.documentElement;
+      const t = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      html.setAttribute('data-theme', t);
+      localStorage.setItem('idig-theme', t);
     }
-  });
-},{rootMargin:'-80px 0px -60% 0px'});
-document.querySelectorAll('h2[id],h3[id]').forEach(el=>observer.observe(el));
-
-// Close sidebar on link click (mobile)
-document.querySelectorAll('.sidebar a').forEach(a=>{
-  a.addEventListener('click',()=>{
-    if(window.innerWidth<=900){
-      document.getElementById('sidebar').classList.remove('open');
-      document.querySelector('.overlay').classList.remove('show');
+    function toggleSidebar() {
+      document.getElementById('sidebar').classList.toggle('open');
+      document.querySelector('.overlay').classList.toggle('show');
     }
-  });
-});
+    // Restore theme
+    const saved = localStorage.getItem('idig-theme');
+    if (saved) document.documentElement.setAttribute('data-theme', saved);
+    else if (window.matchMedia('(prefers-color-scheme:dark)').matches) document.documentElement.setAttribute('data-theme', 'dark');
 
-// Copy buttons for code blocks
-document.querySelectorAll('pre').forEach(pre=>{
-  const btn=document.createElement('button');
-  btn.className='copy-btn';btn.textContent='Copy';
-  btn.addEventListener('click',()=>{
-    navigator.clipboard.writeText(pre.querySelector('code').textContent);
-    btn.textContent='Copied!';setTimeout(()=>btn.textContent='Copy',1500);
-  });
-  pre.appendChild(btn);
-});
-</script>
+    // Active sidebar link on scroll
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          document.querySelectorAll('.sidebar a').forEach(a => a.classList.remove('active'));
+          const link = document.querySelector('.sidebar a[href="#' + e.target.id + '"]');
+          if (link) link.classList.add('active');
+        }
+      });
+    }, { rootMargin: '-80px 0px -60% 0px' });
+    document.querySelectorAll('h2[id],h3[id]').forEach(el => observer.observe(el));
+
+    // Close sidebar on link click (mobile)
+    document.querySelectorAll('.sidebar a').forEach(a => {
+      a.addEventListener('click', () => {
+        if (window.innerWidth <= 900) {
+          document.getElementById('sidebar').classList.remove('open');
+          document.querySelector('.overlay').classList.remove('show');
+        }
+      });
+    });
+
+    // Copy buttons for code blocks
+    document.querySelectorAll('pre').forEach(pre => {
+      const btn = document.createElement('button');
+      btn.className = 'copy-btn'; btn.textContent = 'Copy';
+      btn.addEventListener('click', () => {
+        navigator.clipboard.writeText(pre.querySelector('code').textContent);
+        btn.textContent = 'Copied!'; setTimeout(() => btn.textContent = 'Copy', 1500);
+      });
+      pre.appendChild(btn);
+    });
+  </script>
 
 </body>
+
 </html>
